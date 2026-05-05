@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>節約管理アプリ</title>
+    <style>
+      body {
+        font-family: "Hiragino Sans", "Meiryo", sans-serif;
+        background-color: #f0f9ff;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 500px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #1a1a2e;
+      }
+      label {
+        display: block;
+        margin-top: 16px;
+        font-weight: bold;
+        color: #555;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-top: 6px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        box-sizing: border-box;
+      }
+      button {
+        width: 100%;
+        margin-top: 24px;
+        padding: 14px;
+        background-color: #4a90e2;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #357abd;
+      }
+      .result {
+        margin-top: 24px;
+        padding: 20px;
+        background: #f0f9ff;
+        border-radius: 12px;
+        text-align: center;
+      }
+      .result p {
+        margin: 8px 0;
+        color: #333;
+      }
+      .remaining {
+        font-size: 2em;
+        font-weight: bold;
+        color: #4a90e2;
+      }
+      .progress-bar {
+        background: #e0e0e0;
+        border-radius: 8px;
+        height: 20px;
+        margin-top: 12px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: #4a90e2;
+        border-radius: 8px;
+        width: 0%;
+        transition: width 0.5s;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>節約管理アプリ</h1>
+
+      <label>欲しいものの金額（目標）</label>
+      <input id="goal" type="number" placeholder="例：50000">
+
+      <label>今日までに節約した金額</label>
+      <input id="saved" type="number" placeholder="例：12000">
+
+      <button onclick="calculate()">計算する</button>
+
+      <div class="result" id="result" style="display:none;">
+        <p>残り金額</p>
+        <p class="remaining" id="remaining"></p>
+        <p id="message"></p>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress"></div>
+        </div>
+        <p id="percent"></p>
+      </div>
+    </div>
+
+    <script>
+      function calculate() {
+        let goal = Number(document.getElementById("goal").value);
+        let saved = Number(document.getElementById("saved").value);
+
+        if (goal <= 0) {
+          alert("目標金額を入力してください");
+          return;
+        }
+
+        let remaining = goal - saved;
+        let percent = Math.min(Math.round((saved / goal) * 100), 100);
+
+        document.getElementById("remaining").textContent = remaining.toLocaleString() + " 円";
+        document.getElementById("percent").textContent = "達成率：" + percent + "%";
+        document.getElementById("progress").style.width = percent + "%";
+
+        if (remaining <= 0) {
+          document.getElementById("message").textContent = "🎉 目標達成！";
+        } else {
+          document.getElementById("message").textContent = "あと " + remaining.toLocaleString() + " 円で目標達成！";
+        }
+
+        document.getElementById("result").style.display = "block";
+      }
+    </script>
+  </body>
+</html>
